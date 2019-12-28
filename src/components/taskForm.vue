@@ -16,21 +16,21 @@
             <v-text-field label="Enter Task Here..." v-model="form.task"></v-text-field>
             <div class="d-flex justify-space-between">
               <v-date-picker width="220" v-model="form.date"></v-date-picker>
-              <v-time-picker width="220" v-model="form.time"></v-time-picker>
+              <v-time-picker width="220" v-model="form.time" v-if="dialogBox"></v-time-picker>
             </div>
           </v-container>
         </v-card-text>
         <v-card-actions>
-          <v-card-text class="red--text"></v-card-text>
-          <v-btn color="blue darken-1" text @click="clearForm()">Close</v-btn>
-          <v-btn color="blue darken-1" text >Save</v-btn>
+          <v-card-text class="red--text">{{error}}</v-card-text>
+          <v-btn color="blue darken-1" text @click="closeFunction(false)">Close</v-btn>
+          <v-btn color="blue darken-1" text @click="saveFunction">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
   </div>
 </template>
 <script>
-import { mapActions, mapMutations } from 'vuex'
+import { mapActions, mapMutations } from "vuex";
 export default {
   name: "taskForm",
   data: () => {
@@ -38,25 +38,30 @@ export default {
   },
   methods: {
     ...mapMutations({
-      setDialogValue: 'formData/setDialogValue',
-      clearForm:'formData/clearForm'
+      setDialogValue: "formData/setDialogValue",
+      clearForm: "formData/clearForm",
+      saveForm: "formData/saveForm"
     }),
     ...mapActions({
-      closeFunction: 'formData/close', // map `this.add()` to `this.$store.dispatch('increment')`
-      clearForm: 'formData/clearForm'
-    }),
+      closeFunction: "formData/close",
+      clearFunction: "formData/clear",
+      saveFunction: "formData/save"
+    })
   },
   computed: {
     form() {
       return this.$store.state.formData.form;
     },
     dialogBox: {
-      get () {
-        return this.$store.state.formData.dialog
+      get() {
+        return this.$store.state.formData.dialog;
       },
-      set (val) {
-        return this.setDialogValue(val)
+      set(val) {
+        return this.setDialogValue(val);
       }
+    },
+    error() {
+      return this.$store.state.formData.error;
     }
   }
 };

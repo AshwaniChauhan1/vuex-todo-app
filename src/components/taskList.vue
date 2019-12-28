@@ -10,7 +10,7 @@
                 <del>{{ task.task }}</del>
               </p>
               <p v-if="!task.check">{{ task.task }}</p>
-              <v-checkbox class="mt-2 ml-3" v-model="form.check"></v-checkbox>
+              <v-checkbox class="mt-2 ml-3" v-model="task.check"></v-checkbox>
             </v-list-item>
             <v-list-item>
               <v-list-item-content>Date : {{task.date}}</v-list-item-content>
@@ -20,10 +20,10 @@
             </v-list-item>
             <v-list-item class="d-flex justify-space-between">
               <div>
-                <a class="float-left" @click="edit(index)">Edit</a>
+                <a class="float-left" @click="editFunction(index)">Edit</a>
               </div>
               <div>
-                <a class="float-left" @click="del(index)">Delete</a>
+                <a class="float-left" @click="deleteFunction(index)">Delete</a>
               </div>
             </v-list-item>
           </v-card>
@@ -33,7 +33,27 @@
   </div>
 </template>
 <script>
+import { mapActions, mapMutations } from "vuex";
 export default {
-  name: "taskList"
+  name: "taskList",
+  methods: {
+    ...mapMutations({
+      delete: "formData/deleteTask",
+      addData: "formData/addData",
+      editClk: "formData/editClk"
+    }),
+    ...mapActions({
+      deleteFunction: "formData/delete",
+      editFunction: "formData/editClick"
+    })
+  },
+  computed: {
+    form() {
+      return this.$store.state.formData.form;
+    },
+    tasks() {
+      return this.$store.state.formData.tasks;
+    }
+  }
 };
 </script>
