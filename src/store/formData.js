@@ -14,6 +14,7 @@ const  mutations = {
     },
     clearForm(state){
         state.form={task:"",date:"",time:"",check:false};
+        state.error="";
     },
     addData(state){
         state.val = {
